@@ -2,7 +2,7 @@ package com.augustord.docker_manager.service;
 
 import java.util.List;
 
-import org.jvnet.hk2.annotations.Service;
+import org.springframework.stereotype.Service;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
@@ -38,7 +38,7 @@ public class DockerService {
     }
 
     public void deleteContainer(String containerId) {
-        dockerClient.removeContainerCmd(containerId).exec();
+        dockerClient.removeContainerCmd(containerId).withForce(true).exec();
     }
 
     public void createContainer(String imageName) {
