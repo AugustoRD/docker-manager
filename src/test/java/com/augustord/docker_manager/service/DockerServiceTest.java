@@ -2,6 +2,7 @@ package com.augustord.docker_manager.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -17,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.augustord.docker_manager.dtos.ContainerResponseDto;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.StartContainerCmd;
 import com.github.dockerjava.api.exception.NotFoundException;
@@ -42,16 +44,18 @@ public class DockerServiceTest {
     @DisplayName("Should list containers when listContainers is called with showAll=true")
     public void testListContainers() {
         // arrange
-        List<Container> containers = Collections.emptyList();
+        List<Container> rawContainers = Collections.emptyList();
 
-        when(dockerClient.listContainersCmd().withShowAll(true).exec()).thenReturn(containers);
+        when(dockerClient.listContainersCmd().withShowAll(true).exec()).thenReturn(rawContainers);
 
         // act
-        List<Container> result = dockerService.listContainers(true);
+        List<ContainerResponseDto> result = dockerService.listContainers(true);
 
         // assert
-        assertEquals(containers, result);
+        assertTrue(result.isEmpty());
         verify(dockerClient.listContainersCmd().withShowAll(true)).exec();
+        // assertEquals(containers, result);
+        // verify(dockerClient.listContainersCmd().withShowAll(true)).exec();
     }
 
     @Test
@@ -63,10 +67,10 @@ public class DockerServiceTest {
         when(dockerClient.listContainersCmd().withShowAll(false).exec()).thenReturn(containers);
 
         // act
-        List<Container> result = dockerService.listContainers(false);
+        List<ContainerResponseDto> result = dockerService.listContainers(false);
 
         // assert
-        assertEquals(containers, result);
+        assertTrue(result.isEmpty());
         verify(dockerClient.listContainersCmd().withShowAll(false)).exec();
     }
 

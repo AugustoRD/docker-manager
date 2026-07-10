@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.augustord.docker_manager.controllers.DockerContainersController;
+import com.augustord.docker_manager.dtos.ContainerResponseDto;
 import com.augustord.docker_manager.service.DockerService;
 import com.github.dockerjava.api.model.Container;
 
@@ -38,7 +39,7 @@ public class DockerControllerTest {
 
     @Test
     void listContainers() throws Exception {
-        List<Container> mockContainersList = Collections.emptyList();
+        List<ContainerResponseDto> mockContainersList = Collections.emptyList();
         when(dockerService.listContainers(true)).thenReturn(mockContainersList);
 
         // mockMvc.perform(get("/containers?showAll=true"))
@@ -52,7 +53,7 @@ public class DockerControllerTest {
 
     @Test
     void listContainersWithShowAllFalse() throws Exception {
-        List<Container> mockContainersList = Collections.emptyList();
+        List<ContainerResponseDto> mockContainersList = Collections.emptyList();
         when(dockerService.listContainers(false)).thenReturn(mockContainersList);
 
         // mockMvc.perform(get("/containers?showAll=false"))
