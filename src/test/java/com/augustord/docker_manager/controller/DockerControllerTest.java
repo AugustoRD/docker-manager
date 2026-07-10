@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -38,6 +39,7 @@ public class DockerControllerTest {
     }
 
     @Test
+    @DisplayName("Should return 200 OK and empty list when no containers exist (showAll=true)")
     void listContainers() throws Exception {
         List<ContainerResponseDto> mockContainersList = Collections.emptyList();
         when(dockerService.listContainers(true)).thenReturn(mockContainersList);
@@ -52,6 +54,7 @@ public class DockerControllerTest {
     }
 
     @Test
+    @DisplayName("Should return 200 OK and empty list when no containers exist (showAll=false)")
     void listContainersWithShowAllFalse() throws Exception {
         List<ContainerResponseDto> mockContainersList = Collections.emptyList();
         when(dockerService.listContainers(false)).thenReturn(mockContainersList);
@@ -64,6 +67,51 @@ public class DockerControllerTest {
                 .andExpect(content().json("[]"));
 
         verify(dockerService).listContainers(false);
+    }
+
+    @Test
+    @DisplayName("Should return 204 No Content when starting a container")
+    void startContainer() throws Exception {
+        String containerId = "123456789abc";
+
+        mockMvc.perform(post("/api/containers/{id}/start", containerId))
+                .andExpect(status().isNoContent());
+
+        verify(dockerService).startContainer(containerId);
+    }
+
+    @Test
+    @DisplayName("Should return 204 No Content when stopping a container")
+    void stopContainer() throws Exception {
+        String containerId = "123456789abc";
+
+        mockMvc.perform(post("/api/containers/{id}/stop", containerId))
+                .andExpect(status().isNoContent());
+
+        verify(dockerService).stopContainer(containerId);
+    }
+
+    @Test
+    @DisplayName("Should return 204 No Content when deleting a container")
+    void deleteContainer() throws Exception {
+        String containerId = "123456789abc";
+
+        mockMvc.perform(delete("/api/containers/{id}", containerId))
+                .andExpect(status().isNoContent());
+
+        verify(dockerService).deleteContainer(containerId);
+    }
+
+    @Test
+    @DisplayName("Should return 201 Created when creating a container")
+    void createContainer() throws Exception {
+        String imageName = "nginx";
+
+        mockMvc.perform(post("/api/containers")
+                .param("imageName", imageName))
+                .andExpect(status().isCreated());
+
+        verify(dockerService).createContainer(imageName);
     }
 
 }
