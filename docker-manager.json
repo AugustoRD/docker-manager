@@ -1,0 +1,111 @@
+{
+  "kind": "agentlens-report",
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-25T13:31:19.794Z",
+  "cliVersion": "1.0.5",
+  "baselines": [],
+  "repos": [
+    {
+      "repoId": "docker-manager-1",
+      "ok": true,
+      "repoName": "docker-manager",
+      "localPath": "/home/augustorodrigues/workspace/pessoal/docker-manager",
+      "foundByTool": {
+        "codex": {
+          "path": "AGENTS.md",
+          "content": "# Docker Manager API - Agent Context\n\n## 1. Regras Globais e Tech Stack\n\n- **Natureza do Projeto:** Este é um projeto exclusivamente de backend (API RESTful). Não gere ou sugira código de frontend (HTML/CSS/JS/React).\n- **Linguagem e Framework:** Java 21 e Spring Boot 3 (Web).\n- **Gerenciador de Dependências:** Maven (utilize o ficheiro `pom.xml`).\n- **Integração Principal:** A comunicação com o Docker Daemon é feita estritamente através da biblioteca oficial `docker-java` via Unix Socket.\n- **Qualidade e Testes:** Todo o código novo ou alterado deve ser coberto por testes unitários utilizando JUnit 5 e Mockito.\n\n## 2. Arquitetura e Estrutura de Diretórios\n\nO pacote base da aplicação é `com.augustord.docker_manager`. O projeto segue uma arquitetura em camadas rígida na pasta `src/main/java`:\n\n- `/config`: Apenas classes de configuração do Spring e instâncias do cliente Docker (ex: `DockerClientConfig.java`).\n- `/controllers`: Apenas endpoints REST (ex: `DockerContainersController.java`, `DockerImagesController.java`). A lógica de negócio não deve ficar aqui.\n- `/dtos`: Apenas objetos de transferência de dados (Records ou Classes) para padronizar as respostas da API (ex: `ContainerResponseDto.java`).\n- `/service`: Apenas a lógica de negócio e a interação direta com o `docker-java` (ex: `DockerService.java`).\n\n## 3. Padrões de Teste\n\n- Os testes residem em `src/test/java/com/augustord/docker_manager`.\n- Mantenha a organização por contexto: testes de controladores na pasta `/controller` (ex: `DockerControllerTest.java`) e testes de serviço na pasta `/service` (ex: `DockerServiceTest.java`).\n\n## 4. Funcionalidades de Domínio\n\nA API foca-se no ciclo de vida de contentores locais: Listar, Criar, Iniciar, Parar e Deletar (com exclusão forçada habilitada). Qualquer nova funcionalidade deve alinhar-se com este escopo.\n"
+        }
+      },
+      "uniqueRefs": [
+        {
+          "path": "pom.xml",
+          "type": "inline-code",
+          "fromTools": [
+            "codex"
+          ],
+          "found": true,
+          "content": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n\txsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd\">\n\t<modelVersion>4.0.0</modelVersion>\n\t<parent>\n\t\t<groupId>org.springframework.boot</groupId>\n\t\t<artifactId>spring-boot-starter-parent</artifactId>\n\t\t<version>4.1.0</version>\n\t\t<relativePath/> <!-- lookup parent from repository -->\n\t</parent>\n\t<groupId>com.augustord</groupId>\n\t<artifactId>docker-manager</artifactId>\n\t<version>0.0.1-SNAPSHOT</version>\n\t<name/>\n\t<description/>\n\t<url/>\n\t<licenses>\n\t\t<license/>\n\t</licenses>\n\t<developers>\n\t\t<developer/>\n\t</developers>\n\t<scm>\n\t\t<connection/>\n\t\t<developerConnection/>\n\t\t<tag/>\n\t\t<url/>\n\t</scm>\n\t<properties>\n\t\t<java.version>21</java.version>\n\t</properties>\n\t<dependencies>\n\t\t<dependency>\n\t\t\t<groupId>org.springframework.boot</groupId>\n\t\t\t<artifactId>spring-boot-starter-webmvc</artifactId>\n\t\t</dependency>\n\n\t\t<dependency>\n\t\t\t<groupId>org.springframework.boot</groupId>\n\t\t\t<artifactId>spring-boot-devtools</artifactId>\n\t\t\t<scope>runtime</scope>\n\t\t\t<optional>true</optional>\n\t\t</dependency>\n\t\t<dependency>\n\t\t\t<groupId>org.projectlombok</groupId>\n\t\t\t<artifactId>lombok</artifactId>\n\t\t\t<optional>true</optional>\n\t\t</dependency>\n\t\t<dependency>\n\t\t\t<groupId>org.springframework.boot</groupId>\n\t\t\t<artifactId>spring-boot-starter-webmvc-test</artifactId>\n\t\t\t<scope>test</scope>\n\t\t</dependency>\n\t\t<dependency>\n\t\t\t<groupId>com.github.docker-java</groupId>\n\t\t\t<artifactId>docker-java</artifactId>\n\t\t\t<version>3.2.3</version>\n\t\t</dependency>\n\t\t<dependency>\n\t\t\t<groupId>com.github.docker-java</groupId>\n\t\t\t<artifactId>docker-java-transport-httpclient5</artifactId>\n\t\t\t<version>3.2.3</version>\n\t\t</dependency>\n\t\t<dependency>\n\t\t\t<groupId>org.apache.httpcomponents.client5</groupId>\n\t\t\t<artifactId>httpclient5</artifactId>\n\t\t\t<version>5.3.1</version>\n\t\t</dependency>\n\t\t<dependency>\n\t\t\t<groupId>net.java.dev.jna</groupId>\n\t\t\t<artifactId>jna</artifactId>\n\t\t\t<version>5.8.0</version>\n\t\t</dependency>\n\t\t<dependency>\n\t\t\t<groupId>org.junit.jupiter</groupId>\n\t\t\t<artifactId>junit-jupiter-api</artifactId>\n\t\t\t<scope>test</scope>\n\t\t</dependency>\n\t\t<dependency>\n\t\t\t<groupId>org.mockito</groupId>\n\t\t\t<artifactId>mockito-core</artifactId>\n\t\t\t<version>5.13.0</version>\n\t\t\t<scope>test</scope>\n\t\t</dependency>\n\t\t<dependency>\n\t\t\t<groupId>org.mockito</groupId>\n\t\t\t<artifactId>mockito-junit-jupiter</artifactId>\n\t\t\t<version>5.13.0</version>\n\t\t\t<scope>test</scope>\n\t\t</dependency>\n\t\t\n\t</dependencies>\n\n\t<build>\n\t\t<plugins>\n\t\t\t<plugin>\n\t\t\t\t<groupId>org.springframework.boot</groupId>\n\t\t\t\t<artifactId>spring-boot-maven-plugin</artifactId>\n\t\t\t\t<configuration>\n\t\t\t\t\t<excludes>\n\t\t\t\t\t\t<exclude>\n\t\t\t\t\t\t\t<groupId>org.projectlombok</groupId>\n\t\t\t\t\t\t\t<artifactId>lombok</artifactId>\n\t\t\t\t\t\t</exclude>\n\t\t\t\t\t</excludes>\n\t\t\t\t</configuration>\n\t\t\t</plugin>\n\t\t\t<plugin>\n\t\t\t\t<groupId>org.apache.maven.plugins</groupId>\n\t\t\t\t<artifactId>maven-compiler-plugin</artifactId>\n\t\t\t\t<executions>\n\t\t\t\t\t<execution>\n\t\t\t\t\t\t<id>default-compile</id>\n\t\t\t\t\t\t<phase>compile</phase>\n\t\t\t\t\t\t<goals>\n\t\t\t\t\t\t\t<goal>compile</goal>\n\t\t\t\t\t\t</goals>\n\t\t\t\t\t\t<configuration>\n\t\t\t\t\t\t\t<annotationProcessorPaths>\n\t\t\t\t\t\t\t\t<path>\n\t\t\t\t\t\t\t\t\t<groupId>org.projectlombok</groupId>\n\t\t\t\t\t\t\t\t\t<artifactId>lombok</artifactId>\n\t\t\t\t\t\t\t\t</path>\n\t\t\t\t\t\t\t</annotationProcessorPaths>\n\t\t\t\t\t\t</configuration>\n\t\t\t\t\t</execution>\n\t\t\t\t\t<execution>\n\t\t\t\t\t\t<id>default-testCompile</id>\n\t\t\t\t\t\t<phase>test-compile</phase>\n\t\t\t\t\t\t<goals>\n\t\t\t\t\t\t\t<goal>testCompile</goal>\n\t\t\t\t\t\t</goals>\n\t\t\t\t\t\t<configuration>\n\t\t\t\t\t\t\t<annotationProcessorPaths>\n\t\t\t\t\t\t\t\t<path>\n\t\t\t\t\t\t\t\t\t<groupId>org.projectlombok</groupId>\n\t\t\t\t\t\t\t\t\t<artifactId>lombok</artifactId>\n\t\t\t\t\t\t\t\t</path>\n\t\t\t\t\t\t\t</annotationProcessorPaths>\n\t\t\t\t\t\t</configuration>\n\t\t\t\t\t</execution>\n\t\t\t\t</executions>\n\t\t\t</plugin>\n\t\t</plugins>\n\t</build>\n\n</project>\n",
+          "tokens": 968
+        },
+        {
+          "path": "DockerClientConfig.java",
+          "type": "inline-code",
+          "fromTools": [
+            "codex"
+          ],
+          "found": false,
+          "content": null,
+          "tokens": 0
+        },
+        {
+          "path": "DockerContainersController.java",
+          "type": "inline-code",
+          "fromTools": [
+            "codex"
+          ],
+          "found": false,
+          "content": null,
+          "tokens": 0
+        },
+        {
+          "path": "DockerImagesController.java",
+          "type": "inline-code",
+          "fromTools": [
+            "codex"
+          ],
+          "found": false,
+          "content": null,
+          "tokens": 0
+        },
+        {
+          "path": "ContainerResponseDto.java",
+          "type": "inline-code",
+          "fromTools": [
+            "codex"
+          ],
+          "found": false,
+          "content": null,
+          "tokens": 0
+        },
+        {
+          "path": "DockerService.java",
+          "type": "inline-code",
+          "fromTools": [
+            "codex"
+          ],
+          "found": false,
+          "content": null,
+          "tokens": 0
+        },
+        {
+          "path": "DockerControllerTest.java",
+          "type": "inline-code",
+          "fromTools": [
+            "codex"
+          ],
+          "found": false,
+          "content": null,
+          "tokens": 0
+        },
+        {
+          "path": "DockerServiceTest.java",
+          "type": "inline-code",
+          "fromTools": [
+            "codex"
+          ],
+          "found": false,
+          "content": null,
+          "tokens": 0
+        }
+      ],
+      "agentTok": 460,
+      "refTok": 968,
+      "viewTokensByTool": {
+        "codex": 1428
+      },
+      "allContextTokens": 1428,
+      "totalContextTokens": 1428,
+      "noFiles": false
+    }
+  ]
+}
